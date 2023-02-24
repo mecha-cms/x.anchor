@@ -1,0 +1,7 @@
+@charset "UTF-8";
+[id]:where(h1, h2, h3, h4, h5, h6, [aria-level][role=heading]) > a[aria-hidden=true][href*="#"]:first-of-type::before {
+  content: var(--anchor, "§");
+  display: inline-block;
+  font: inherit;
+  margin-inline-end: 0.25em;
+}
