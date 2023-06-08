@@ -1,5 +1,10 @@
 <?php namespace x\anchor;
 
+function get() {
+    \extract($GLOBALS, \EXTR_SKIP);
+    \class_exists("\\Asset") && $state->is('page') && \Asset::set(__DIR__ . \D . 'index' . (\defined("\\TEST") && \TEST ? '.' : '.min.') . 'css', 10);
+}
+
 function page__content($content) {
     if (!$content || (false === \stripos($content, '</h') && false === \stripos(\strtr($content, [
         "'" => "",
@@ -46,11 +51,6 @@ function page__content($content) {
         }
         return $m[0];
     }, $content);
-}
-
-function get() {
-    \extract($GLOBALS, \EXTR_SKIP);
-    \class_exists("\\Asset") && $state->is('page') && \Asset::set(__DIR__ . \D . 'index' . (\defined("\\TEST") && \TEST ? '.' : '.min.') . 'css', 10);
 }
 
 \Hook::set('get', __NAMESPACE__ . "\\get", -1);
