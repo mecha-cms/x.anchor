@@ -1,5 +1,5 @@
 {
-  "description": "Generates anchor target on heading elements automatically",
+  "description": "Generates anchor target on heading elements automatically.",
   "license": "GPL-3.0-or-later",
   "name": "mecha-cms/x.anchor"
 }

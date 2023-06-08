@@ -8,14 +8,14 @@ type: Markdown
 version: 1.0.0
 ...
 
-This extension generates anchor target on heading elements automatically. If you are already using the
+This extension automatically generates anchor targets on headings. If you are already using the
 [Table of Contents](https://github.com/mecha-cms/x.t-o-c) extension, you may not really need this extension as it does
-the same thing already, with a few extra features.
+the same thing with some additional features.
 
 ### Usage
 
-You have complete control to determine your own heading ID with Markdown Extra syntax or with plain HTML markup. This
-extension will not overwrite the specific ID that you have specified in the heading elements:
+You have complete control to specify your own heading ID using Markdown Extra syntax or plain HTML markup. This
+extension will not overwrite the specific ID you specify in the heading elements:
 
 ~~~ .md
 ### Heading Level 3 {#asdf}
@@ -29,8 +29,8 @@ extension will not overwrite the specific ID that you have specified in the head
 <p aria-level="3" role="heading">Heading Level 3</p>
 ~~~
 
-Add a `role` attribute with value other than `heading` to the desired heading elements to prevent the automatic anchor
-insertion:
+To prevent automatic anchor insertion, add a `role` attribute with a value other than `heading` to the desired heading
+elements:
 
 ~~~ .md
 ### (Not) Heading Level 3 {role='text'}
@@ -42,9 +42,9 @@ insertion:
 
 ### Symbol
 
-Default symbol for the anchor text is a [section sign](https://en.wikipedia.org/wiki/Section_sign) character. You can
-use your own anchor symbol by setting the `--anchor` CSS variable value (yes, the anchor text is actually a CSS pseudo
-element):
+The default anchor symbol is a [section sign](https://en.wikipedia.org/wiki/Section_sign) character. You can use your
+own anchor symbol by setting the value of the CSS variable `--anchor` (yes, the anchor text is actually just a CSS
+pseudo-element):
 
 ~~~ .css
 :root {
