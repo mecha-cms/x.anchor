@@ -13,7 +13,7 @@ function page__content($content) {
         return $content;
     }
     $count = [];
-    return \preg_replace_callback('/<(caption|div|dt|figcaption|h[1-6]|p|summary)(\s(?:"[^"]*"|\'[^\']*\'|[^>])*)?>([\s\S]*?)<\/\1>/i', static function ($m) use (&$count) {
+    return \preg_replace_callback('/<(caption|div|dt|figcaption|h[1-6]|p|summary)(\s(?>"[^"]*"|\'[^\']*\'|[^>])*)?>([\s\S]*?)<\/\1>/i', static function ($m) use (&$count) {
         if ('h' === \strtolower($m[1][0]) && \is_numeric(\substr($m[1], 1))) {
             if (false !== \stripos($m[2], 'role=') && !\preg_match('/\brole=([\'"]?)heading\1/i', $m[2])) {
                 return $m[0]; // Skip!
