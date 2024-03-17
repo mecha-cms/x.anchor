@@ -1,7 +1,7 @@
 <?php namespace x\anchor;
 
 function get() {
-    \extract($GLOBALS, \EXTR_SKIP);
+    \extract(\lot());
     \class_exists("\\Asset") && $state->is('page') && \Asset::set(__DIR__ . \D . 'index' . (\defined("\\TEST") && \TEST ? '.' : '.min.') . 'css', 10);
 }
 
