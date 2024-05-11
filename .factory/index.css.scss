@@ -3,12 +3,13 @@
     > a {
       &[aria-hidden='true'] {
         &[href*='#'] {
+          display: inline-block;
+          margin-inline-end: 0.25em;
           &:first-of-type {
             &::before {
               content: var(--anchor, '\00A7');
-              display: inline-block;
+              display: block;
               font: inherit;
-              margin-inline-end: 0.25em;
             }
           }
         }
