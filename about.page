@@ -5,7 +5,7 @@ icon: 'M12 2A3 3 0 0 0 9 5A3 3 0 0 0 11 7.83V9H8V11H11V19.92C10.26 19.79 9.5 19.
 color: '#3c7271'
 author: Taufik Nurrohman
 type: Markdown
-version: 1.0.3
+version: 1.0.4
 ...
 
 This extension automatically generates anchor targets on headings. If you are already using the
