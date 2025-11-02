@@ -28,11 +28,11 @@ function page__content($content) {
                 continue;
             }
             if (false !== \strpos($test, 'id=') && ($k = \pair($test)['id'] ?? 0)) {} else {
-                $k = 'to:' . \To::kebab(\w(\substr($v[0], $v[2], -\strlen('</' . $n . '>'))) ?: \substr(\uniqid(), 6));
+                $k = 'to:' . \To::kebab(\w(\substr($v[0], $v[2], $v[3])) ?: \substr(\uniqid(), 6));
             }
         } else if (false !== \strpos($test, 'role=') && 'heading' === (($q = \pair($test))['role'] ?? 0) && !empty($q['aria-level'])) {
             if (false !== \strpos($test, 'id=') && ($k = $q['id'] ?? 0)) {} else {
-                $k = 'to:' . \To::kebab(\w(\substr($v[0], $v[2], -\strlen('</' . $n . '>'))) ?: \substr(\uniqid(), 6));
+                $k = 'to:' . \To::kebab(\w(\substr($v[0], $v[2], $v[3])) ?: \substr(\uniqid(), 6));
             }
         }
         if (0 !== $k) {
