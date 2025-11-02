@@ -54,7 +54,3 @@ function route__page() {
 
 \Hook::set('page.content', __NAMESPACE__ . "\\page__content", 2.1); // Run this hook before `x\t_o_c\page__content` hook
 \Hook::set('route.page', __NAMESPACE__ . "\\route__page", -1);
-
-if (\defined("\\TEST") && 'x.anchor' === \TEST && \is_file($test = __DIR__ . \D . 'test.php')) {
-    require $test;
-}
