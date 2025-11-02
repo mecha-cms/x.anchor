@@ -1,51 +1,50 @@
 <?php namespace x\anchor;
 
 function page__content($content) {
-    if (!$content || (false === \stripos($content, '</h') && false === \stripos(\strtr($content, [
+    if (!$content || (false === \strpos($content, '</h') && false === \strpos(\strtr($content, [
         "'" => "",
         '"' => ""
     ]), 'role=heading'))) {
         return $content;
     }
-    $count = [];
-    return \preg_replace_callback('/<(caption|div|dt|figcaption|h[1-6]|p|summary)(\s(?>"[^"]*"|\'[^\']*\'|[^>])*)?>([\s\S]*?)<\/\1>/i', static function ($m) use (&$count) {
-        if ('h' === \strtolower($m[1][0]) && \is_numeric(\substr($m[1], 1))) {
-            if (false !== \stripos($m[2], 'role=') && !\preg_match('/\brole=([\'"]?)heading\1/i', $m[2])) {
-                return $m[0]; // Skip!
-            }
-            if (false !== \stripos($m[2], 'id=') && \preg_match('/\bid=("[^"]+"|\'[^\']+\'|[^>\s]+)/i', $m[2], $mm)) {
-                $id = $mm[1];
-                if (('"' === $id[0] && '"' === \substr($id[0], -1)) || ("'" === $id[0] && "'" === \substr($id[0], -1))) {
-                    $id = \htmlspecialchars_decode(\substr($id, 1, -1));
-                } else {
-                    $id = \htmlspecialchars_decode($id);
-                }
-            } else {
-                $id = \To::kebab(\w($m[3] ?: \substr(\uniqid(), 6)));
-            }
-            $count[$id] = ($count[$id] ?? -1) + 1;
-            $out = new \HTML($m[0]);
-            $out[1] = '<a aria-hidden="true" href="#' . ($out['id'] = $id . ($count[$id] > 0 ? '.' . $count[$id] : "")) . '"></a>' . $m[3];
-            return (string) $out;
+    $apart = \apart($content, ['caption', 'div', 'dt', 'figcaption', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'p', 'summary']);
+    $content = "";
+    $r = [];
+    foreach ($apart as $v) {
+        $k = 0;
+        if (1 !== $v[1]) {
+            $content .= $v[0];
+            continue;
         }
-        if (false !== \stripos($m[2], 'role=') && \preg_match('/\brole=([\'"]?)heading\1/i', $m[2]) && \preg_match('/\baria-level=("\d+"|\'\d+\'|\d+)/i', $m[2], $mm)) {
-            if (false !== \stripos($m[2], 'id=') && \preg_match('/\bid=("[^"]+"|\'[^\']+\'|[^>\s]+)/i', $m[2], $mm)) {
-                $id = $mm[1];
-                if (('"' === $id[0] && '"' === \substr($id[0], -1)) || ("'" === $id[0] && "'" === \substr($id[0], -1))) {
-                    $id = \htmlspecialchars_decode(\substr($id, 1, -1));
-                } else {
-                    $id = \htmlspecialchars_decode($id);
-                }
-            } else {
-                $id = 'to:' . \To::kebab(\w($m[3] ?: \substr(\uniqid(), 6)));
-            }
-            $count[$id] = ($count[$id] ?? -1) + 1;
-            $out = new \HTML($m[0]);
-            $out[1] = '<a aria-hidden="true" href="#' . ($out['id'] = $id . ($count[$id] > 0 ? '.' . $count[$id] : "")) . '"></a>' . $m[3];
-            return (string) $out;
+        $n = \substr(strtok($v[0], " \n\r\t>"), 1);
+        if ('/' === $n[0]) {
+            $content .= $v[0];
+            continue;
         }
-        return $m[0];
-    }, $content);
+        $test = \substr(\substr($v[0], 0, $v[2]), \strlen($n) + 1, -1);
+        if (false !== \strpos(',h1,h2,h3,h4,h5,h6,', ',' . $n . ',')) {
+            if (false !== \strpos($test, 'role=') && 'heading' !== (\pair($test)['role'] ?? 0)) {
+                $content .= $v[0];
+                continue;
+            }
+            if (false !== \strpos($test, 'id=') && ($k = \pair($test)['id'] ?? 0)) {} else {
+                $k = 'to:' . \To::kebab(\w(\substr($v[0], $v[2], -\strlen('</' . $n . '>'))) ?: \substr(\uniqid(), 6));
+            }
+        } else if (false !== \strpos($test, 'role=') && 'heading' === (($q = \pair($test))['role'] ?? 0) && !empty($q['aria-level'])) {
+            if (false !== \strpos($test, 'id=') && ($k = $q['id'] ?? 0)) {} else {
+                $k = 'to:' . \To::kebab(\w(\substr($v[0], $v[2], -\strlen('</' . $n . '>'))) ?: \substr(\uniqid(), 6));
+            }
+        }
+        if (0 !== $k) {
+            $r[$k] = ($r[$k] ?? -1) + 1;
+            $e = new \HTML($v[0]);
+            $e[1] = '<a aria-hidden="true" href="#' . ($e['id'] = $k . ($r[$k] > 0 ? '.' . $r[$k] : "")) . '"></a>' . $e[1];
+            $content .= $e;
+            continue;
+        }
+        $content .= $v[0];
+    }
+    return $content;
 }
 
 function route__page() {
